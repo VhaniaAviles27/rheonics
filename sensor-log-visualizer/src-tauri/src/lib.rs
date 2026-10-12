@@ -44,7 +44,9 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             process_log,
             commands::reports::list_reports,
-            commands::reports::read_report
+            commands::reports::read_report,
+            commands::plots::list_plots,
+            commands::plots::plot_log,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -7,11 +7,14 @@ import { LogUploadPanel } from "./features/log-analysis/components/LogUploadPane
 import { useLogAnalysis } from "./features/log-analysis/hooks/useLogAnalysis";
 import { ReportsPanel } from "./features/reports/components/ReportPanel";
 import { OverviewPanel } from "./features/overview/component/OverviewPanel";
+import { PlotViewer } from "./features/plots/components/PlotViewer";
+import { useReports } from "./features/reports/hooks/useReports";
 
 function App() {
   const [activeView, setActiveView] = useState<AppView>("overview");
   const { isAnalyzing, result, error, runAnalysis } = useLogAnalysis();
   const currentPage = pageInfo[activeView];
+  const { reports } = useReports();
 
   return (
     <AppLayout
@@ -22,7 +25,6 @@ function App() {
     >
       <Stack className="app__view">
         <Stack className="app__welcome">
-
           {activeView === "log-analysis" && (
             <Stack className="app__view">
               <Stack className="app__welcome">
@@ -78,7 +80,22 @@ function App() {
               <OverviewPanel />
             </Stack>
           )}
+          {activeView === "graphs" && (
+            <Stack className="app__view">
+              <Stack className="app__welcome">
+                <Text className="app__eyebrow">VISUALIZATION</Text>
+                <Title className="app__welcome-title" order={3}>
+                  Explore measurements
+                </Title>
+                <Text className="app__description">
+                  Pick a plot from the catalog and toggle between line and
+                  scatter views.
+                </Text>
+              </Stack>
 
+              <PlotViewer reports={reports} />
+            </Stack>
+          )}
           {activeView === "reports" && (
             <Stack className="app__view">
               <Stack className="app__welcome">

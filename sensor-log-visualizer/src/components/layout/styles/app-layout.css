@@ -21,7 +21,6 @@
   min-width: 0;
   min-height: 100vh;
   padding: var(--mantine-spacing-xl);
-  background: var(--mantine-color-gray-0);
 }
 
 .app-layout__container {
