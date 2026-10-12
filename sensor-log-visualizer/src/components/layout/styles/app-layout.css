@@ -1,0 +1,42 @@
+.app-layout {
+  min-height: 100vh;
+}
+
+.app-layout__navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: #18263d;
+  z-index: 100;
+}
+
+.app-layout__main {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  min-width: 0;
+  min-height: 100vh;
+  padding: var(--mantine-spacing-xl);
+  background: var(--mantine-color-gray-0);
+}
+
+.app-layout__container {
+  width: 100%;
+  max-width: 1500px;
+  margin-inline: auto;
+}
+
+.app-layout__navbar > * {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 48em) {
+  .app-layout__main {
+    padding: var(--mantine-spacing-md);
+  }
+}

@@ -1,6 +1,7 @@
 use serde_json::Value;
 use std::path::PathBuf;
 use std::process::Command;
+mod commands;
 
 #[tauri::command]
 fn process_log(path: String, log_type: String) -> Result<Value, String> {
@@ -40,7 +41,11 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
-        .invoke_handler(tauri::generate_handler![process_log])
+        .invoke_handler(tauri::generate_handler![
+            process_log,
+            commands::reports::list_reports,
+            commands::reports::read_report
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

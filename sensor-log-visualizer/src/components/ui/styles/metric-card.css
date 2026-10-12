@@ -1,0 +1,35 @@
+.metric-card {
+  width: 100%;
+  padding: var(--mantine-spacing-lg);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--mantine-color-body);
+}
+
+.metric-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metric-card__label {
+  margin: 0;
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+}
+
+.metric-card__value {
+  margin: 0;
+  color: var(--mantine-color-text);
+  font-size: var(--mantine-font-size-xl);
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.metric-card__description {
+  margin: 0;
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-xs);
+}

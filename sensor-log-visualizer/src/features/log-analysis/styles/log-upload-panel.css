@@ -1,0 +1,122 @@
+.upload-panel {
+  width: 100%;
+  padding: var(--mantine-spacing-lg);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-body);
+}
+
+.upload-panel__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-lg);
+}
+
+.upload-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--mantine-spacing-md);
+}
+
+.upload-panel__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.upload-panel__title {
+  margin: 0;
+  font-size: var(--mantine-h3-font-size);
+  font-weight: 600;
+  line-height: var(--mantine-h3-line-height);
+  color: var(--mantine-color-text);
+}
+
+.upload-panel__description,
+.upload-panel__file-description {
+  margin: 0;
+  font-size: var(--mantine-font-size-sm);
+  color: var(--mantine-color-dimmed);
+}
+
+.upload-panel__file-badge {
+  flex-shrink: 0;
+}
+
+.upload-panel__dropzone {
+  padding: var(--mantine-spacing-xl);
+  border: 1px dashed var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-default-hover);
+  text-align: center;
+}
+
+.upload-panel__dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+}
+
+.upload-panel__upload-icon {
+  color: var(--mantine-color-blue-6);
+}
+
+.upload-panel__file-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.upload-panel__file-name {
+  margin: 0;
+  font-size: var(--mantine-font-size-md);
+  font-weight: 600;
+  color: var(--mantine-color-text);
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.upload-panel__browse-button {
+  align-self: center;
+}
+
+.upload-panel__error {
+  border-radius: var(--mantine-radius-md);
+}
+
+.upload-panel__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--mantine-spacing-md);
+}
+
+.upload-panel__status {
+  margin: 0;
+  font-size: var(--mantine-font-size-sm);
+  color: var(--mantine-color-dimmed);
+}
+
+.upload-panel__analyze-button {
+  flex-shrink: 0;
+}
+
+@media (max-width: 36em) {
+  .upload-panel__header {
+    flex-wrap: wrap;
+  }
+
+  .upload-panel__footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .upload-panel__browse-button,
+  .upload-panel__analyze-button {
+    width: 100%;
+  }
+}

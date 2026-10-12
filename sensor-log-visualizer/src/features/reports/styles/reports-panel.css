@@ -1,0 +1,18 @@
+.reports-panel {
+  width: 100%;
+  gap: 1rem;
+}
+
+.reports-panel__empty {
+  border: 1px dashed var(--mantine-color-gray-4);
+  background: var(--mantine-color-gray-0);
+}
+
+.reports-panel__list,
+.reports-panel__preview {
+  border: 1px solid var(--mantine-color-gray-3);
+}
+
+.reports-panel__preview {
+  background: var(--mantine-color-white);
+}

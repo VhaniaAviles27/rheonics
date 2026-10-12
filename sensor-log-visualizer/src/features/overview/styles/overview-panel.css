@@ -1,0 +1,13 @@
+.overview-panel {
+  width: 100%;
+  gap: 1rem;
+}
+
+.overview-panel__header {
+  justify-content: space-between;
+}
+
+.overview-panel__grid {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}

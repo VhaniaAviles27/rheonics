@@ -1,0 +1,6 @@
+.status-badge {
+  border-radius: var(--mantine-radius-sm);
+  font-size: var(--mantine-font-size-md);
+  font-weight: 600;
+  text-transform: none;
+}
