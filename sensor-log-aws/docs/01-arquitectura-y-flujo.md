@@ -7,7 +7,7 @@ Describir el recorrido de un archivo de registro de un sensor Rheonics desde su 
 ## Flujo funcional
 
 1. **Ingesta:** el cliente interactúa con una interfaz web o API. El backend genera una URL prefirmada (*presigned URL*) para que el archivo se cargue directamente en el bucket de entrada.
-2. **Disparador:** al crearse el objeto, Amazon S3 emite una notificación 
+2. **Disparador:** al crearse el objeto, Amazon S3 emite una notificación `s3:ObjectCreated:*`.
 3. **Procesamiento:** el evento se entrega a una cola Amazon SQS y un servicio de procesamiento consume el mensaje. El servicio recupera el archivo, valida su formato y parsea las métricas necesarias, por ejemplo viscosidad, densidad y temperatura.
 4. **Persistencia:** los datos validados se guardan en la base de datos seleccionada.
 5. **Consumo:** una API autenticada permite consultar los datos procesados y descargar reportes consolidados.
