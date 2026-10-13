@@ -31,7 +31,7 @@ Tauri desktop application for visualizing and analyzing processed sensor log dat
 
 ### Demo
 
-[▶ Watch the Application Demo](https://github.com/user-attachments/assets/a39fcd19-31d7-40a1-8d74-f2ba51820a3b)
+[▶ Watch the Application Demo](https://github.com/user-attachments/assets/7a80774e-32d3-409e-8609-b04dd367024b)
 
 ---
 
