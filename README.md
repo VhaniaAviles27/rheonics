@@ -151,16 +151,3 @@ Tal como pide el challenge, se documenta lo siguiente:
 
 ---
 
-## 🚀 Cómo revisar este repositorio
-
-1. Empieza por el README de cada pregunta (`Q1` → `Q5`).
-2. Para la Q2 y Q3, sigue las instrucciones de build/run indicadas en cada README.
-3. Para la Q4, ejecuta los scripts `00_*.sql` … `16_*.sql` en orden (ver
-   `Q4_sql_database/README.md`).
-4. Para la Q5, abre el PDF con la propuesta arquitectónica.
-
----
-
-## 📬 Contacto
-
-_[Tu nombre]_ — _[tu email]_ — _[tu LinkedIn, opcional]_
