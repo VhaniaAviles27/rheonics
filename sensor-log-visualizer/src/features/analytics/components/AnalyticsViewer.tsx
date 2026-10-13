@@ -73,7 +73,6 @@ export function AnalyticsViewer({ reports }: AnalyticsViewerProps) {
   return (
     <Paper className="analytics-viewer">
       <Stack className="analytics-viewer__content">
-
         <SimpleGrid cols={{ base: 1, sm: 3 }}>
           <Select
             label="Sample"
@@ -136,25 +135,23 @@ export function AnalyticsViewer({ reports }: AnalyticsViewerProps) {
           </Stack>
         )}
 
-        {!isLoading && result?.figure && (
-          <Stack>
-            <Paper withBorder p="md">
-              <Stack gap={4}>
-                <Text fw={500}>Analysis</Text>
-                <Text size="sm">
-                  Trend: {result.trend.method}
-                  {result.trend.r2 != null &&
-                    ` · R² = ${result.trend.r2.toFixed(3)}`}
-                </Text>
-                <Text size="sm">Spikes: {result.anomalies.spikes.length}</Text>
-                <Text size="sm">Steps: {result.anomalies.steps.length}</Text>
-                <Text size="sm">Gaps: {result.anomalies.gaps.length}</Text>
-                <Text size="sm">
-                  Missing runs: {result.anomalies.nan_runs.length}
-                </Text>
-              </Stack>
-            </Paper>
-          </Stack>
+        {!isLoading && result && (
+          <Paper withBorder p="md">
+            <Stack gap={4}>
+              <Text fw={500}>Analysis</Text>
+              <Text size="sm">
+                Trend: {result.trend.method}
+                {result.trend.r2 != null &&
+                  ` · R² = ${result.trend.r2.toFixed(3)}`}
+              </Text>
+              <Text size="sm">Spikes: {result.anomalies.spikes.length}</Text>
+              <Text size="sm">Steps: {result.anomalies.steps.length}</Text>
+              <Text size="sm">Gaps: {result.anomalies.gaps.length}</Text>
+              <Text size="sm">
+                Missing runs: {result.anomalies.nan_runs.length}
+              </Text>
+            </Stack>
+          </Paper>
         )}
       </Stack>
     </Paper>

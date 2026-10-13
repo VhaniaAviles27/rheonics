@@ -1,5 +1,3 @@
-import { PlotlyFigure } from "../../plots/types/plots.types";
-
 export type TrendMethod = "linear" | "sine" | "stl" | "none";
 
 export interface TrendResult {
@@ -59,5 +57,4 @@ export interface AnalyticsResult {
     gaps: GapAnomaly[];
     nan_runs: NanRunAnomaly[];
   };
-  figure: PlotlyFigure;
 }

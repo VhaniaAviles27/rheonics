@@ -2,7 +2,6 @@ from pathlib import Path
 import pandas as pd
 
 from .pipeline import analyze_series
-from .renderer import build_figure, sanitize
 from ..plotting.catalog import get_plot
 
 
@@ -49,11 +48,4 @@ def analyze_log(
     x = pd.to_numeric(target["timestamp"], errors="coerce").to_numpy()
     y = pd.to_numeric(target[col], errors="coerce").to_numpy()
 
-    analysis = analyze_series(x, y)
-    analysis["figure"] = build_figure(
-        x=x, y=y, analysis=analysis,
-        title=definition.label,
-        y_label=definition.y_label,
-        unit=definition.unit,
-    )
-    return sanitize(analysis)
+    return analyze_series(x, y)
