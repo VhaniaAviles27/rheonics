@@ -2,10 +2,6 @@ import numpy as np
 
 
 def find_spikes(y: np.ndarray, fitted: np.ndarray, z_threshold: float = 4.0) -> list[dict]:
-    """
-    Picos: puntos cuyo residuo (y - fitted) se aleja mucho de la mediana del residuo.
-    Usa MAD como escala robusta (no std, para que un outlier no enmascare a los demás).
-    """
     residual = y - fitted
     mask = np.isfinite(residual)
     if mask.sum() < 5:
@@ -32,10 +28,6 @@ def find_spikes(y: np.ndarray, fitted: np.ndarray, z_threshold: float = 4.0) -> 
 
 
 def find_steps(y: np.ndarray, threshold_factor: float = 6.0) -> list[dict]:
-    """
-    Escalones / discontinuidades: saltos bruscos entre muestras consecutivas.
-    Compara cada |diff| contra la mediana de todos los |diff| escalada por MAD.
-    """
     mask = np.isfinite(y)
     if mask.sum() < 10:
         return []
@@ -48,8 +40,10 @@ def find_steps(y: np.ndarray, threshold_factor: float = 6.0) -> list[dict]:
     med_diff = float(np.median(finite_diffs))
     mad_diff = float(np.median(np.abs(finite_diffs - med_diff)))
     scale = 1.4826 * mad_diff
+    if scale <= 0:
+        scale = float(np.std(finite_diffs))
 
-    threshold = threshold_factor * scale if scale > 0 else threshold_factor * med_diff
+    threshold = threshold_factor * scale
     if threshold <= 0:
         return []
 
@@ -65,7 +59,6 @@ def find_steps(y: np.ndarray, threshold_factor: float = 6.0) -> list[dict]:
 
 
 def find_gaps(t: np.ndarray, tolerance: float = 2.0) -> list[dict]:
-    """Registros faltantes: separaciones temporales mayores al doble del intervalo típico."""
     if len(t) < 3:
         return []
 
