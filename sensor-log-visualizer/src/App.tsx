@@ -9,6 +9,7 @@ import { ReportsPanel } from "./features/reports/components/ReportPanel";
 import { OverviewPanel } from "./features/overview/component/OverviewPanel";
 import { PlotViewer } from "./features/plots/components/PlotViewer";
 import { useReports } from "./features/reports/hooks/useReports";
+import { AnalyticsViewer } from "./features/analytics/components/AnalyticsViewer";
 
 function App() {
   const [activeView, setActiveView] = useState<AppView>("overview");
@@ -96,6 +97,23 @@ function App() {
               <PlotViewer reports={reports} />
             </Stack>
           )}
+
+          {activeView === "trends" && (
+            <Stack className="app__view">
+              <Stack className="app__welcome">
+                <Text className="app__eyebrow">TIME ANALYSIS</Text>
+                <Title className="app__welcome-title" order={3}>
+                  Trends and anomalies
+                </Title>
+                <Text className="app__description">
+                  Fit the underlying pattern and detect data-quality events.
+                </Text>
+              </Stack>
+
+              <AnalyticsViewer reports={reports} />
+            </Stack>
+          )}
+
           {activeView === "reports" && (
             <Stack className="app__view">
               <Stack className="app__welcome">

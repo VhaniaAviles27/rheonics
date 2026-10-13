@@ -47,6 +47,7 @@ pub fn run() {
             commands::reports::read_report,
             commands::plots::list_plots,
             commands::plots::plot_log,
+            commands::analytics::analyze_log,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

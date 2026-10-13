@@ -1,4 +1,5 @@
 import {
+  IconChartBar,
   IconChartLine,
   IconClipboardData,
   IconFileAnalytics,
@@ -23,7 +24,7 @@ export const navigationItems = [
     id: "graphs",
     label: "Graphs",
     description: "Visualize data series",
-    icon: IconChartLine,
+    icon: IconChartBar,
   },
   {
     id: "trends",

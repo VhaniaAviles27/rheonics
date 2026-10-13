@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.utils import PlotlyJSONEncoder
@@ -36,7 +37,10 @@ def _render_a_log(df: pd.DataFrame, definition: PlotDefinition, mode: str) -> li
                 y=group[col],
                 mode=mode,
                 name=str(serial),
-                hovertemplate="%{x|%Y-%m-%d %H:%M}<br>%{y}<extra>" + str(serial) + "</extra>",
+                hovertemplate=(
+                    "%{x|%Y-%m-%d %H:%M}<br>%{y}"
+                    "<extra>" + str(serial) + "</extra>"
+                ),
             )
         )
     return traces
@@ -54,7 +58,10 @@ def _render_p_log(df: pd.DataFrame, definition: PlotDefinition, mode: str) -> li
                 y=pd.to_numeric(df[col], errors="coerce"),
                 mode=mode,
                 name=label,
-                hovertemplate="%{x|%Y-%m-%d %H:%M}<br>%{y}<extra>" + label + "</extra>",
+                hovertemplate=(
+                    "%{x|%Y-%m-%d %H:%M}<br>%{y}"
+                    "<extra>" + label + "</extra>"
+                ),
             )
         )
     return traces
@@ -65,6 +72,7 @@ def render_plot(
     definition: PlotDefinition,
     chart_type: ChartType,
 ) -> dict:
+    """Construye la figura Plotly y la devuelve como dict serializable a JSON."""
     detected = _detect_sample_type(df)
     if detected != definition.sample_type:
         raise ValueError(
@@ -72,18 +80,12 @@ def render_plot(
         )
 
     mode = "lines" if chart_type == "line" else "markers"
-    if chart_type == "line":
-        traces = (
-            _render_a_log(df, definition, mode)
-            if definition.sample_type == "A-LOG"
-            else _render_p_log(df, definition, mode)
-        )
-    else:
-        traces = (
-            _render_a_log(df, definition, mode)
-            if definition.sample_type == "A-LOG"
-            else _render_p_log(df, definition, mode)
-        )
+
+    traces = (
+        _render_a_log(df, definition, mode)
+        if definition.sample_type == "A-LOG"
+        else _render_p_log(df, definition, mode)
+    )
 
     y_axis_title = definition.y_label
     if definition.unit:
@@ -96,7 +98,13 @@ def render_plot(
         yaxis_title=y_axis_title,
         hovermode="x unified",
         margin={"l": 60, "r": 20, "t": 50, "b": 50},
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.02,
+            "xanchor": "right",
+            "x": 1,
+        },
         template="plotly_white",
     )
 
