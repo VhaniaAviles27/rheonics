@@ -1,26 +1,26 @@
-# Setup y dependencias — `sensor-log-processor`
+# Setup and Dependencies — `sensor-log-processor`
 
-Motor Python para procesar archivos Rheonics `A-LOG` y `P-LOG`, validar registros, exportar CSV y generar figuras/análisis para el visualizador de escritorio.
+Python engine for processing Rheonics `A-LOG` and `P-LOG` files, validating records, exporting CSV files, and generating figures and analysis data for the desktop visualizer.
 
-## 1. Requisitos previos
+## 1. Prerequisites
 
-- **Python 3.10 o posterior**.
-- `pip` y `venv` (incluidos normalmente con Python).
-- Una terminal **Bash** (Git Bash o WSL en Windows; Bash en Linux/macOS).
-- Si se integrará con `sensor-log-visualizer`, tener también instalado el entorno de compilación de Tauri 2/Rust en el proyecto del visualizador. Es una dependencia de la aplicación de escritorio, no de este motor Python.
+- **Python 3.10 or later.**
+- `pip` and `venv` (usually included with Python).
+- A **Bash terminal** (Git Bash or WSL on Windows; Bash on Linux/macOS).
+- If integrating with `sensor-log-visualizer`, the Tauri 2/Rust build environment must also be installed in the visualizer project. This is a desktop application dependency, not a dependency of this Python engine.
 
-Comprueba las versiones:
+Check the installed versions:
 
 ```bash
 python --version
 python -m pip --version
 ```
 
-Si `python` no está disponible en tu terminal, prueba `python3`.
+If `python` is not available in your terminal, try `python3`.
 
-## 2. Crear y activar el entorno virtual
+## 2. Create and Activate the Virtual Environment
 
-Desde la carpeta raíz del repositorio:
+From the repository root directory:
 
 ```bash
 cd sensor-log-processor
@@ -28,156 +28,158 @@ python -m venv .venv
 source .venv/Scripts/activate
 ```
 
-En Linux/macOS/WSL, usa en su lugar:
+On Linux/macOS/WSL, use the following command instead:
 
 ```bash
 source .venv/bin/activate
 ```
 
-Actualiza `pip`:
+Upgrade `pip`:
 
 ```bash
 python -m pip install --upgrade pip
 ```
 
-> En Windows, ejecuta los comandos de activación de `Scripts` desde Git Bash. Si el entorno se creó desde WSL, activa el entorno con `source .venv/bin/activate`.
+> On Windows, run the `Scripts` activation command from Git Bash. If the virtual environment was created in WSL, activate it using `source .venv/bin/activate`.
 
-## 3. Instalar dependencias
+## 3. Install Dependencies
 
-Dependencias de ejecución declaradas en `requirements.txt`:
+Runtime dependencies declared in `requirements.txt`:
 
-- `pandas>=2.0`: lectura, transformación y exportación de datos tabulares.
-- `plotly>=5.20`: generación de figuras serializables para el visualizador.
-- `numpy`: usado directamente por los módulos de análisis y visualización; actualmente suele instalarse como dependencia de `pandas`, pero conviene declararlo explícitamente en `requirements.txt`.
+- `pandas>=2.0`: Reading, transforming, and exporting tabular data.
+- `plotly>=5.20`: Generating figures that can be serialized for the visualizer.
+- `numpy`: Used directly by the analysis and visualization modules. It is usually installed as a dependency of `pandas`, but explicitly declaring it in `requirements.txt` is recommended.
 
-Instalación:
+Install the dependencies:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-Para instalar también las dependencias de pruebas (`pytest`, `pytest-cov` y `pytest-mock`):
+To also install the testing dependencies (`pytest`, `pytest-cov`, and `pytest-mock`):
 
 ```bash
 python -m pip install -r requirements-dev.txt
 ```
 
-Si se desea declarar explícitamente NumPy, añade esta línea a `requirements.txt`:
+If you want to explicitly declare NumPy, add the following line to `requirements.txt`:
 
 ```text
 numpy>=1.24
 ```
 
-## 4. Estructura relevante
+## 4. Relevant Project Structure
 
 ```text
 sensor-log-processor/
 ├── data/
-│   ├── input/                 # Archivos LOG de entrada
-│   └── output/                # CSV generados
+│   ├── input/                 # Input LOG files
+│   └── output/                # Generated CSV files
 ├── src/
-│   ├── constants/             # Constantes de A-LOG y P-LOG
-│   ├── parsers/               # Parsers de cada formato
-│   ├── validation/            # Validación y resumen de registros
+│   ├── constants/             # A-LOG and P-LOG constants
+│   ├── parsers/               # Parsers for each format
+│   ├── validation/            # Record validation and summaries
 │   ├── service/
-│   │   └── log_processing.py  # API de procesamiento: process_log()
-│   ├── plotting/              # Catálogo y generación de figuras Plotly
-│   ├── analytics/             # Tendencias y detección de anomalías
-│   └── main.py                # Ejecución de muestras de ejemplo
-├── tests/                     # Pruebas automatizadas
+│   │   └── log_processing.py  # Processing API: process_log()
+│   ├── plotting/              # Plotly chart catalog and generation
+│   ├── analytics/             # Trend analysis and anomaly detection
+│   └── main.py                # Example execution entry point
+├── tests/                     # Automated tests
 ├── requirements.txt
 ├── requirements-dev.txt
 └── pytest.ini
 ```
 
-## 5. Ejecutar el procesamiento de ejemplo
+## 5. Run the Example Processing Workflow
 
-El programa principal procesa estos archivos:
+The main program processes the following files:
 
 - `data/input/SAMPLE-A.LOG`
 - `data/input/SAMPLE-P.LOG`
 
-Genera los CSV correspondientes en `data/output/`.
+The corresponding CSV files are generated in `data/output/`.
 
-Desde la raíz del proyecto, con el entorno virtual activo:
+From the project root, with the virtual environment activated, run:
 
 ```bash
 python -m src.main
 ```
 
-El programa muestra el resumen de validación, el número de registros y la ruta del CSV generado. Para procesar otros archivos desde una integración o un script, la función pública está en `src.service.log_processing`:
+The program displays the validation summary, the number of records, and the path of each generated CSV file.
+
+To process other files from an integration or script, use the public function available in `src.service.log_processing`:
 
 ```python
 from src.service.log_processing import process_log
 
-result = process_log("ruta/al/archivo.LOG", "A-LOG")
-# Para archivos P-LOG, usa "P-LOG".
+result = process_log("path/to/file.LOG", "A-LOG")
+# For P-LOG files, use "P-LOG".
 ```
 
-El resultado incluye el tipo y nombre del archivo, el total de registros, los conteos de registros válidos e inválidos, las columnas y los registros serializables.
+The result includes the file type and name, total number of records, valid and invalid record counts, column names, and serializable records.
 
-## 6. Ejecutar las pruebas
+## 6. Run the Tests
 
-Instala las dependencias de desarrollo y ejecuta:
+Install the development dependencies and run:
 
 ```bash
 python -m pytest
 ```
 
-Para generar un reporte de cobertura en la terminal:
+To generate a test coverage report in the terminal:
 
 ```bash
 python -m pytest --cov=src --cov-report=term-missing
 ```
 
-## 7. Integración con `sensor-log-visualizer` (Tauri)
+## 7. Integration with `sensor-log-visualizer` (Tauri)
 
-El visualizador y el procesador son proyectos separados. El código Rust/Tauri debe invocar Python apuntando a esta carpeta.
+The visualizer and the processor are separate projects. The Rust/Tauri application must invoke Python and point it to this project's directory.
 
-En la integración existente, configura `SENSOR_LOG_PROCESSOR_DIR` con la **ruta absoluta** a la raíz de `sensor-log-processor`. Por ejemplo, desde Bash:
+In the existing integration, configure `SENSOR_LOG_PROCESSOR_DIR` with the **absolute path** to the `sensor-log-processor` root directory. For example, in Bash:
 
 ```bash
-export SENSOR_LOG_PROCESSOR_DIR="/ruta/absoluta/sensor-log-processor"
+export SENSOR_LOG_PROCESSOR_DIR="/absolute/path/to/sensor-log-processor"
 ```
 
-La integración puede priorizar el intérprete del entorno virtual:
+The integration can prioritize the Python interpreter from the virtual environment:
 
 - Windows: `.venv/Scripts/python.exe`
 - Linux/macOS: `.venv/bin/python`
 
-Si la integración ejecuta `desktop_runner.py`, verifica que ese archivo exista en la versión del proyecto que estás usando; no aparece en la estructura incluida en este paquete. No asumas que el comando de integración funciona hasta confirmar que el runner está presente y que el código Tauri apunta a la ruta correcta.
+If the integration executes `desktop_runner.py`, verify that this file exists in the version of the project you are using. It is not listed in the project structure included in this package. Do not assume the integration command will work until you confirm that the runner exists and that the Tauri code points to the correct path.
 
-Mantén los CSV procesados en `desktop-output` cuando así lo requiera el visualizador; esa ubicación corresponde al flujo de integración de escritorio y es distinta de `data/output`, usada por el procesamiento de ejemplo.
+Keep processed CSV files in `desktop-output` when required by the visualizer. This directory belongs to the desktop integration workflow and is separate from `data/output`, which is used by the example processing workflow.
 
-## 8. Solución de problemas
+## 8. Troubleshooting
 
 ### `ModuleNotFoundError`
 
-Comprueba que el entorno virtual está activo y vuelve a instalar dependencias:
+Make sure the virtual environment is activated, then reinstall the dependencies:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-### No se encuentra el archivo LOG
+### LOG File Not Found
 
-Verifica la ruta y el nombre exacto del archivo. El programa de ejemplo espera `SAMPLE-A.LOG` y `SAMPLE-P.LOG` dentro de `data/input/`.
+Verify the file path and exact filename. The example program expects `SAMPLE-A.LOG` and `SAMPLE-P.LOG` inside `data/input/`.
 
-### No se genera el CSV
+### CSV File Not Generated
 
-Ejecuta `python -m src.main` desde la raíz del repositorio y revisa los mensajes de error. Comprueba que `data/input/` contiene los archivos de ejemplo y que `data/output/` tiene permisos de escritura.
+Run `python -m src.main` from the project root and check the error messages. Make sure `data/input/` contains the example files and that `data/output/` is writable.
 
-### Las pruebas no encuentran módulos
+### Tests Cannot Find Modules
 
-Ejecuta `python -m pytest` desde la raíz del repositorio. El archivo `pytest.ini` configura `pythonpath = .`.
+Run `python -m pytest` from the project root. The `pytest.ini` file configures `pythonpath = .`.
 
-## 9. Dependencias resumidas
+## 9. Dependency Summary
 
-| Paquete | Uso | Tipo |
+| Package | Purpose | Type |
 |---|---|---|
-| `pandas>=2.0` | DataFrames, importación/exportación CSV | Ejecución |
-| `plotly>=5.20` | Figuras interactivas serializadas a JSON | Ejecución |
-| `numpy` | Cálculos numéricos y análisis de series | Ejecución directa recomendada |
-| `pytest>=8.0` | Pruebas automatizadas | Desarrollo |
-| `pytest-cov>=5.0` | Cobertura de pruebas | Desarrollo |
-| `pytest-mock>=3.12` | Utilidades de mocking para pruebas | Desarrollo |
+| `pandas>=2.0` | DataFrames, CSV import/export | Runtime |
+| `plotly>=5.20` | Interactive figures serialized to JSON | Runtime |
+| `numpy` | Numerical calculations and time-series analysis | Recommended direct runtime dependency |
+| `pytest>=8.0` | Automated testing | Development |
+| `pytest-cov>=5.0` | Test coverage | Development |
+| `pytest-mock>=3.12` | Mocking utilities for tests | Development |
