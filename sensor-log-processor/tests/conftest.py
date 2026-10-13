@@ -1,6 +1,10 @@
+from pathlib import Path
+
 import numpy as np
-import pytest
 import pandas as pd
+import pytest
+
+DATA_INPUT = Path(__file__).parent.parent / "data" / "input"
 
 @pytest.fixture
 def linear_series():
@@ -9,18 +13,21 @@ def linear_series():
     y = 2.0 * x + 3.0 + rng.normal(0, 0.5, size=100)
     return x, y
 
+
 @pytest.fixture
 def series_with_spike(linear_series):
     x, y = linear_series
     y = y.copy()
-    y[50] = y[50] + 50 
+    y[50] = y[50] + 50
     return x, y
+
 
 @pytest.fixture
 def series_with_step():
     x = np.arange(100, dtype=float)
     y = np.concatenate([np.full(50, 10.0), np.full(50, 20.0)])
     return x, y
+
 
 @pytest.fixture
 def series_with_gap():
@@ -44,6 +51,7 @@ def sample_a_csv(tmp_path):
     df.to_csv(path, index=False)
     return path
 
+
 @pytest.fixture
 def sample_p_csv(tmp_path):
     df = pd.DataFrame({
@@ -54,3 +62,18 @@ def sample_p_csv(tmp_path):
     path = tmp_path / "SAMPLE-P.CSV"
     df.to_csv(path, index=False)
     return path
+
+@pytest.fixture
+def sample_a_path():
+    path = DATA_INPUT / "SAMPLE-A.LOG"
+    if not path.exists():
+        pytest.skip(f"Missing sample: {path}")
+    return str(path)
+
+
+@pytest.fixture
+def sample_p_path():
+    path = DATA_INPUT / "SAMPLE-P.LOG"
+    if not path.exists():
+        pytest.skip(f"Missing sample: {path}")
+    return str(path)

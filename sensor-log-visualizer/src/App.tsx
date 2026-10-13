@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Paper, Stack, Text, Title } from "@mantine/core";
 import { AppLayout } from "./components/layout/AppLayout";
 import type { AppView } from "./components/layout/types/app-layout.types";
@@ -15,7 +15,16 @@ function App() {
   const [activeView, setActiveView] = useState<AppView>("overview");
   const { isAnalyzing, result, error, runAnalysis } = useLogAnalysis();
   const currentPage = pageInfo[activeView];
-  const { reports } = useReports();
+  const { reports, refresh: refreshReports } = useReports();
+  useEffect(() => {
+  if (
+    activeView === "reports" ||
+    activeView === "graphs" ||
+    activeView === "trends"
+  ) {
+    void refreshReports();
+  }
+}, [activeView, refreshReports]);
 
   return (
     <AppLayout
