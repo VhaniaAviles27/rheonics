@@ -1,21 +1,31 @@
 # Sensor Log Processor
 
-Python project for parsing and validating Rheonics A-LOG and P-LOG files.
+Python engine that parses Rheonics `A-LOG` / `P-LOG` files, validates their
+records, exports them as CSV, and renders interactive Plotly figures for the
+desktop visualizer.
 
 ## Features
 
+### Parsing & validation
 - Parses A-LOG files containing timestamps, sensor identification fields, and tagged measurements.
-- Parses P-LOG files containing semicolon-separated measurement fields.
-- Converts the input records into structured pandas DataFrames.
+- Parses P-LOG files containing semicolon-separated measurement blocks.
+- Converts input records into structured pandas DataFrames.
 - Preserves the original line number and source filename for traceability.
 - Handles malformed or incomplete records without stopping the entire import.
 - Records data-quality issues using `description_error` and `is_valid`.
-- Exports the processed records to CSV files.
+- Exports processed records to CSV files under `data/output/`.
+
+### Plotting
+- Catalog of 37 predefined plots covering thermal, frequency, fluid, electrical,
+  phase, signal, model and diagnostic metrics across both sample types.
+- Renders Plotly figures (JSON) with `line` or `scatter` modes.
+- For A-LOG, series are automatically split per `sensor_serial`.
+- For P-LOG, plots expose the `primary` / `secondary` channel pair.
 
 ## Requirements
 
 - Python 3.10 or later
-- Dependencies listed in `requirements.txt`
+- Dependencies listed in `requirements.txt` (`pandas`, `plotly`)
 
 ## Project Structure
 
@@ -26,6 +36,8 @@ sensor-log-processor/
 │   │   ├── SAMPLE-A.LOG
 │   │   └── SAMPLE-P.LOG
 │   └── output/
+│       ├── SAMPLE-A.CSV
+│       └── SAMPLE-P.CSV
 ├── src/
 │   ├── constants/
 │   │   ├── a_log_constants.py
@@ -37,85 +49,13 @@ sensor-log-processor/
 │   │   └── log_parser_util.py
 │   ├── validation/
 │   │   └── log_validation.py
+│   ├── plotting/
+│   │   ├── __init__.py
+│   │   ├── catalog.py     # 37 plot definitions
+│   │   ├── renderer.py    # builds Plotly figures
+│   │   └── service.py     # public API: plot_log(), list_plots()
+│   ├── service/
+│   │   └── log_processing.py
 │   └── main.py
 ├── requirements.txt
 └── README.md
-```
-
-## Installation
-
-Create and activate a virtual environment:
-
-```bash
-python -m venv .venv
-```
-
-Windows PowerShell:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
-
-Install the dependencies:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-## Usage
-
-Place the input files in `data/input/` using the filenames expected by the application.
-
-Run the processor from the project root:
-
-```bash
-python -m src.main
-```
-
-The application parses the input files and exports the resulting CSV files to the configured output directory.
-
-## Validation Fields
-
-Each processed record includes:
-
-| Field | Description |
-|---|---|
-| `source_file` | Name of the input file |
-| `line_number` | Original line number in the input file |
-| `timestamp` | Unix timestamp extracted from the record |
-| `timestamp_utc` | UTC representation of the timestamp |
-| `description_error` | Error descriptions joined into a single text field; empty when no errors are detected |
-| `is_valid` | `True` when no validation errors are detected; otherwise, `False` |
-
-Additional columns depend on the log format and its measurement fields.
-
-## A-LOG Format
-
-A-LOG records contain a Unix timestamp, a quoted identification header, and tag-value pairs. The identification header provides the sensor serial, firmware version, and electronics serial.
-
-Known measurement tags are mapped to their corresponding fields. Numeric measurements are parsed as numbers, while string fields such as error codes are preserved as strings.
-
-## P-LOG Format
-
-P-LOG records contain a Unix timestamp followed by 23 parameter blocks. Each parameter block consists of four fields:
-
-- `primary`
-- `secondary`
-- `status1`
-- `status2`
-
-The final fields represent the overall device status and pressure. The expected record length is 95 semicolon-separated fields.
-
-## Data Quality
-
-Malformed timestamps, incomplete records, unknown A-LOG tags, and invalid numeric values can be reported as validation errors.
-
-The parser retains malformed records when possible so they can be reviewed instead of silently discarded.
-
-Validation identifies structural and parsing problems. It does not automatically determine whether every numeric measurement is physically plausible.
-
-## Limitations
-
-- The implementation follows the supplied Sensor Log Parsing Specification.
-- The parser does not infer undocumented meanings for status codes.
-- Physical plausibility checks and advanced trend analysis are outside the scope of basic parsing.
